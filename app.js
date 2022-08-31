@@ -1,11 +1,10 @@
-// Application Express
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const password = process.env.DB_PASSWORD
+const uri = `mongodb+srv://Projet6:${password}@piiquante.vbp384w.mongodb.net/?retryWrites=true&w=majority`
 
-mongoose.connect('mongodb+srv://Projet6:<password>@piiquante.vbp384w.mongodb.net/?retryWrites=true&w=majority',
-  { useNewUrlParser: true,
-    useUnifiedTopology: true })
+mongoose.connect(uri)
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
