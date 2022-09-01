@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const path = require('path');
 const app = express();
 const password = process.env.DB_PASSWORD;
 const uri = `mongodb+srv://Projet6:${password}@piiquante.vbp384w.mongodb.net/?retryWrites=true&w=majority`;
@@ -26,6 +27,8 @@ app.use((req, res, next) => {
   );
   next();
 });
+
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Gère la ressource image de manière statique 
 
 //Middleware
 app.use((req, res, next) => {
