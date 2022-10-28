@@ -1,7 +1,7 @@
 const Sauce = require("../models/Sauce");
 const fs = require("fs");
 
-//Afficher toutes les sauces
+//Afficher les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
@@ -12,7 +12,7 @@ exports.getAllSauces = (req, res, next) => {
     });
 };
 
-// Afficher une seule sauce
+// Afficher une sauce
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => res.status(200).json(sauce))
@@ -89,29 +89,26 @@ exports.deleteSauce = (req, res, next) => {
     });
 };
 
-// Like/dislike sauce
+// Liker ou disliker une sauce
 exports.likeSauce = (req, res, next) => {
   const userId = req.body.userId;
   const sauceId = req.params.id;
   const likeState = req.body.like;
 
   switch (likeState) {
-    //si like=1 on incrémente l'attribut likes de la sauce et on ajoute l'id de l'utilisateur dans le tableau usersLiked
     case 1:
       Sauce.updateOne(
         { _id: sauceId },
         { $inc: { likes: 1 }, $push: { usersLiked: userId } }
       )
-        .then(() => res.status(200).json({ message: "Like ajouté à la sauce" }))
+        .then(() => res.status(200).json({ message: "Vous aimez cette sauce!" }))
         .catch((error) => res.status(400).json({ error }));
       break;
-    //si like=0 alors on étudie les deux tableaux usersLiked et usersDisliked et on mets à jour les attributs likes et dislikes ainsi que les tableaux eux meme selon la présence de l'userId dans l'un des deux
+
     case 0:
-      //retourne le tableau correspondant a sauceId
       Sauce.findOne({ _id: sauceId })
         .then((sauce) => {
           if (sauce.usersLiked.includes(userId)) {
-            //décrémente l'attribut likes de la sauce et supprime l'userId du tableau usersLiked
             Sauce.updateOne(
               { _id: sauceId },
               { $inc: { likes: -1 }, $pull: { usersLiked: userId } }
@@ -119,11 +116,10 @@ exports.likeSauce = (req, res, next) => {
               .then(() =>
                 res
                   .status(200)
-                  .json({ message: "Vous avez enlever votre like !" })
+                  .json({ message: "Vous avez retiré votre like !" })
               )
               .catch((error) => res.status(400).json({ error }));
           } else if (sauce.usersDisliked.includes(userId)) {
-            //décrémente l'attribut dislikes de la sauce et supprime l'userId du tableau usersDisliked
             Sauce.updateOne(
               { _id: sauceId },
               { $inc: { dislikes: -1 }, $pull: { usersDisliked: userId } }
@@ -131,21 +127,21 @@ exports.likeSauce = (req, res, next) => {
               .then(() =>
                 res
                   .status(200)
-                  .json({ message: "Vous avez enlever votre dislike !" })
+                  .json({ message: "Vous avez retiré votre dislike !" })
               )
               .catch((error) => res.status(400).json({ error }));
           }
         })
         .catch((error) => res.status(400).json({ error }));
       break;
-    //si like=-1 on incrémente l'attribut dislikes de la sauce et on ajoute l'id de l'utilisateur dans le tableau usersDisliked
+
     case -1:
       Sauce.updateOne(
         { _id: sauceId },
         { $inc: { dislikes: 1 }, $push: { usersDisliked: userId } }
       )
         .then(() =>
-          res.status(200).json({ message: "dislike ajouté à la sauce" })
+          res.status(200).json({ message: "Vous n'aimez pas cette sauce!" })
         )
         .catch((error) => res.status(400).json({ error }));
       break;
