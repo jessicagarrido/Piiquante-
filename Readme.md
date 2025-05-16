@@ -1,4 +1,4 @@
-# 🌶️ Piiquante – Project 6 
+# 🌶️ Piiquante  
 ![16275605596354_PiiquanteLogo](https://github.com/user-attachments/assets/923c7c1c-91c4-479e-8a47-6c84c258fe1e)
 
 ## 💻 OpenClassrooms Web Developer Path
