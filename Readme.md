@@ -38,15 +38,11 @@ git clone https://github.com/crlynh/piquante.git
 cd piquante
 ```
 
----
-
 ### 2. Install dependencies
 
 ```bash
 npm install
 ```
-
----
 
 ### 3. Create folders & environment file
 - Create an /images folder at the root of the project
@@ -56,8 +52,6 @@ npm install
 PASSWORD_MONGOOSE=your_mongodb_connection_string
 TOKEN_SECRET=your_jwt_secret
 ```
-
----
 
 ### 4. Run the server
 
